@@ -11,4 +11,4 @@ const OrderItemModel = {
   },
 };
 
-module.exports = BuyerModel;
+module.exports = OrderItemModel;
