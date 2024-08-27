@@ -11,7 +11,7 @@ const OrderItemModel = {
   },
 
   async findByOrderId(order_id) {
-    const query = "SELECT * FROM order_items WHERE order_id =  $1";
+    const query = "SELECT * FROM order_items WHERE order_id =  $1;";
     const values = [order_id];
     const result = await pool.query(query, values);
     return result.rows;

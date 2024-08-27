@@ -1,4 +1,3 @@
-const { query } = require("express");
 const pool = require("../config/db");
 
 const ProductModel = {
@@ -24,12 +23,12 @@ const ProductModel = {
   },
 
   async getAllProducts() {
-    const query = "SELECT * FROM products";
+    const query = "SELECT * FROM products;";
     const result = await pool.query(query);
     return result.rows;
   },
 
-  
+
 };
 
 module.exports = ProductModel;
