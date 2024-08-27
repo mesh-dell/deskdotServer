@@ -50,7 +50,7 @@ const ProductModel = {
     quantity
   ) {
     const query = `UPDATE products
-    SET product_name = $1, product_description = $2, price = $3, quantity = $4 WHERE product_id = $5;`;
+    SET updated_at = CURRENT_TIMESTAMP product_name = $1, product_description = $2, price = $3, quantity = $4 WHERE product_id = $5;`;
 
     const values = [
       product_name,
