@@ -28,7 +28,12 @@ const ProductModel = {
     return result.rows;
   },
 
-
+  async findBySellerId(seller_id) {
+    const query = "SELECT * FROM products WHERE seller_id = $1";
+    const values = [seller_id];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
 };
 
 module.exports = ProductModel;
