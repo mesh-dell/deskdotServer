@@ -20,8 +20,16 @@ const OrderItemModel = {
   async findBySellerId(seller_id) {
     const query = "SELECT * FROM order_items WHERE seller_id =  $1;";
     const values = [seller_id];
-    const result = await pool.query(query);
+    const result = await pool.query(query, values);
     return result.rows;
+  },
+
+  async updateStatus(order_item_id, status) {
+    const query =
+      "UPDATE order_items SET status = $1 WHERE order_item_id = $2 RETURNING *;";
+    const values = [order_item_id, status];
+    const result = await pool.query(query, values);
+    return result.rows[0];
   },
 };
 
