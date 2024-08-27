@@ -1,6 +1,6 @@
 const pool = require("../config/db");
 
-const cartItemsModel = {
+const CartItemsModel = {
   async createCartItem(cart_id, product_id, quantity) {
     const query = `INSERT INTO cart_items (cart_id, product_id, quantity)
        VALUES ($1, $2, $3) RETURNING *;`;
@@ -11,4 +11,4 @@ const cartItemsModel = {
   },
 };
 
-module.exports = cartItemsModel;
+module.exports = CartItemsModel;
