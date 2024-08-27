@@ -8,8 +8,8 @@ const ProductModel = {
     price,
     quantity
   ) {
-    const query = `INSERT INTO sellers (seller_id, product_name, product_description, price, quantity)
-       VALUES ($1, $2, $3, $4 ) RETURNING *;`;
+    const query = `INSERT INTO products (seller_id, product_name, product_description, price, quantity)
+       VALUES ($1, $2, $3, $4, $5) RETURNING *;`;
 
     const values = [
       seller_id,

@@ -1,7 +1,7 @@
 const pool = require("../config/db");
 
-const BuyerModel = {
-  async createBuyer(
+const SellerModel = {
+  async createSeller(
     fisrt_name,
     last_name,
     password,
@@ -10,7 +10,7 @@ const BuyerModel = {
     store_description
   ) {
     const query = `INSERT INTO sellers (fisrt_name, last_name, password, email, store_name, store_description )
-       VALUES ($1, $2, $3, $4 ) RETURNING *;`;
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`;
 
     const values = [
       fisrt_name,
@@ -25,4 +25,4 @@ const BuyerModel = {
   },
 };
 
-module.exports = BuyerModel;
+module.exports = SellerModel;
