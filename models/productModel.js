@@ -22,6 +22,12 @@ const ProductModel = {
     return result.rows[0];
   },
 
+  async findById(product_id) {
+    const query = "SELECT * FROM products WHERE product_id = $1";
+    const values = [product_id];
+    const result = pool.query(query, values);
+  },
+  
   async getAllProducts() {
     const query = "SELECT * FROM products;";
     const result = await pool.query(query);
