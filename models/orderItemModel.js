@@ -9,6 +9,13 @@ const OrderItemModel = {
     const result = await pool.query(query, values);
     return result.rows[0];
   },
+
+  async findByOrderId(order_id) {
+    const query = "SELECT * FROM order_items WHERE order_id =  $1";
+    const values = [order_id];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
 };
 
 module.exports = OrderItemModel;
