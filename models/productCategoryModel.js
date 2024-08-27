@@ -1,8 +1,8 @@
 const pool = require("../config/db");
 
 const ProductCategoriesModel = {
-  async createCartItem(product_id, category_id) {
-    const query = `INSERT INTO cart_items (product_id, category_id)
+  async addProductToCategory(product_id, category_id) {
+    const query = `INSERT INTO product_categories (product_id, category_id)
        VALUES ($1, $2) RETURNING *;`;
 
     const values = [product_id, category_id];
