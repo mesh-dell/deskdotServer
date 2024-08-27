@@ -16,6 +16,13 @@ const OrderItemModel = {
     const result = await pool.query(query, values);
     return result.rows;
   },
+
+  async findBySellerId(seller_id) {
+    const query = "SELECT * FROM order_items WHERE seller_id =  $1;";
+    const values = [seller_id];
+    const result = await pool.query(query);
+    return result.rows;
+  },
 };
 
 module.exports = OrderItemModel;
