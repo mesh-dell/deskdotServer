@@ -23,6 +23,12 @@ const SellerModel = {
     const result = await pool.query(query, values);
     return result.rows[0];
   },
+
+  async getAll() {
+    const query = "SELECT * FROM sellers;";
+    const result = await pool.query(query);
+    return result.rows;
+  },
 };
 
 module.exports = SellerModel;
