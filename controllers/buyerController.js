@@ -17,3 +17,5 @@ const BuyerController = {
     }
   },
 };
+
+module.exports = BuyerController;
