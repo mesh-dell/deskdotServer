@@ -27,7 +27,7 @@ const OrderItemModel = {
   async updateStatus(order_item_id, status) {
     const query =
       "UPDATE order_items SET status = $1 WHERE order_item_id = $2 RETURNING *;";
-    const values = [order_item_id, status];
+    const values = [status, order_item_id];
     const result = await pool.query(query, values);
     return result.rows[0];
   },
