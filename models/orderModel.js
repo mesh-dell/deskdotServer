@@ -18,8 +18,7 @@ const OrderModel = {
   },
 
   async cancelOrder(order_id) {
-    const query =
-      "UPDATE orders SET status = 'cancelled' WHERE order_id = $1 RETURNING * ;";
+    const query = "DELETE FROM orders WHERE order_id = $1 RETURNING *;";
     const values = [order_id];
     const result = await pool.query(query, values);
     return result.rows[0];
