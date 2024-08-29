@@ -23,6 +23,14 @@ const OrderModel = {
     const result = await pool.query(query, values);
     return result.rows[0];
   },
+
+  async updateStatus(order_id, status) {
+    const query =
+      "UPDATE orders SET status = $1 WHERE order_id = $2 RETURNING *;";
+    const values = [status, order_id];
+    const result = await pool.query(query, status);
+    return result.rows;
+  },
 };
 
 module.exports = OrderModel;
