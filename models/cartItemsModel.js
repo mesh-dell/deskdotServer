@@ -18,16 +18,16 @@ const CartItemsModel = {
     return result.rows[0];
   },
 
-  async updateQuantity(cart_id, product_id, quantity) {
+  async updateQuantity(cart_item_id, quantity) {
     const query =
-      "UPDATE cart_items SET quantity = $1 WHERE cart_id = $2 AND product_id = $3 RETURNING *";
+      "UPDATE cart_items SET quantity = $1 WHERE cart_item_id = $2 RETURNING *";
 
-    const values = [quantity, cart_id, product_id];
+    const values = [quantity, cart_item_id];
     const result = await pool.query(query, values);
     return result.rows[0];
   },
 
-  async getAllProducts(cart_id) {
+  async findByCartId(cart_id) {
     const query = "SELECT * FROM cart_items WHERE cart_id =$1;";
     const values = [cart_id];
 
