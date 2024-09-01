@@ -11,7 +11,7 @@ const BuyerModel = {
   },
 
   async findByEmail(email) {
-    const query = "SELECT * FROM sellers WHERE email = $1;";
+    const query = "SELECT * FROM buyers WHERE email = $1;";
     const values = [email];
     const result = await pool.query(query, values);
     return result.rows;
