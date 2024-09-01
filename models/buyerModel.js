@@ -26,7 +26,7 @@ const BuyerModel = {
   },
 
   async findByRefreshToken(refresh_token) {
-    const query = "SELECT * FROM buyers WHERE refresh_token = refresh_token;";
+    const query = "SELECT * FROM buyers WHERE refresh_token = $1;";
     const values = [refresh_token];
     const result = await pool.query(query, values);
     return result.rows;
