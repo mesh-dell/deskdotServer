@@ -4,7 +4,7 @@ const SellerController = {
   async createSeller(req, res) {
     try {
       const {
-        fisrt_name,
+        first_name,
         last_name,
         password,
         email,
@@ -13,7 +13,7 @@ const SellerController = {
       } = req.body;
 
       const seller = await SellerModel.createSeller(
-        fisrt_name,
+        first_name,
         last_name,
         password,
         email,

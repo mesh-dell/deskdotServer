@@ -3,9 +3,9 @@ const BuyerModel = require("../models/buyerModel");
 const BuyerController = {
   async createBuyer(req, res) {
     try {
-      const { fisrt_name, last_name, password, email } = req.body;
+      const { first_name, last_name, password, email } = req.body;
       const buyer = await BuyerModel.createBuyer(
-        fisrt_name,
+        first_name,
         last_name,
         password,
         email
