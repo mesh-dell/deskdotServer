@@ -16,6 +16,29 @@ const BuyerModel = {
     const result = await pool.query(query, values);
     return result.rows;
   },
+
+  async saveRefreshToken(buyer_id, refresh_token) {
+    const query =
+      "UPDATE buyers SET refresh_token = $1 WHERE buyer_id = $2 RETURNING *;";
+    const values = [refresh_token, buyer_id];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
+
+  async findByRefreshToken(refresh_token) {
+    const query = "SELECT * FROM buyers WHERE refresh_token = refresh_token;";
+    const values = [refresh_token];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
+
+  async removeRefreshToken(refresh_token) {
+    const query =
+      "UPDATE buyers SET refresh_token = NULL WHERE refresh_token = $1 RETURNING *;";
+    const values = [refresh_token];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
 };
 
 module.exports = BuyerModel;
