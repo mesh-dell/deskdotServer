@@ -35,6 +35,20 @@ const SellerController = {
       res.status(500).json({ message: err.message });
     }
   },
+
+  async findByEmail(req, res) {
+    try {
+      const { email } = req.body;
+      const seller = await SellerModel.findByEmail(email);
+      if (seller) {
+        res.json(seller);
+      } else {
+        res.status(404).json({ message: "Seller not found" });
+      }
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
 };
 
 module.exports = SellerController;
