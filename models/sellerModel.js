@@ -29,6 +29,13 @@ const SellerModel = {
     const result = await pool.query(query);
     return result.rows;
   },
+
+  async findByEmail(email) {
+    const query = "SELECT * FROM sellers WHERE email = $1;";
+    const values = [email];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
 };
 
 module.exports = SellerModel;
