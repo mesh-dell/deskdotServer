@@ -9,6 +9,10 @@ const ROLES = {
   SELLER: "seller",
 };
 
+function getUserModel(role) {
+  return role === ROLES.BUYER ? BuyerModel : SellerModel;
+}
+
 const AuthController = {
   async register(req, res, next) {
     try {
@@ -22,7 +26,7 @@ const AuthController = {
         store_description,
       } = req.body;
 
-      const UserModel = role == ROLES.BUYER ? BuyerModel : SellerModel;
+      const UserModel = getUserModel(role);
 
       // Check if user already exists
       const existingUser = await UserModel.findByEmail(email);
@@ -85,7 +89,7 @@ const AuthController = {
     try {
       const { email, password, role } = req.body;
 
-      const UserModel = role == ROLES.BUYER ? BuyerModel : SellerModel;
+      const UserModel = getUserModel(role);
 
       // Check if user exists
       const user = await UserModel.findByEmail(email);
@@ -131,7 +135,7 @@ const AuthController = {
   async refreshToken(req, res, next) {
     try {
       const { refreshToken, role } = req.body;
-      const UserModel = role == ROLES.BUYER ? BuyerModel : SellerModel;
+      const UserModel = getUserModel(role);
 
       if (!refreshToken) {
         return res.status(400).json({ message: "Refresh token is required" });
@@ -166,7 +170,7 @@ const AuthController = {
     try {
       const { refreshToken, role } = req.body;
 
-      const UserModel = role == ROLES.BUYER ? BuyerModel : SellerModel;
+      const UserModel = getUserModel(role);
 
       if (!refreshToken) {
         return res.status(400).json({ message: "Refresh token is required" });
