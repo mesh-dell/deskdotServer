@@ -4,6 +4,11 @@ const SellerModel = require("../models/sellerModel");
 const { generateJWT, generateRefreshToken } = require("../utils/jwtGenerator");
 const jwt = require("jsonwebtoken");
 
+const ROLES = {
+  BUYER: "buyer",
+  SELLER: "seller",
+};
+
 const AuthController = {
   async register(req, res, next) {
     try {
@@ -17,7 +22,7 @@ const AuthController = {
         store_description,
       } = req.body;
 
-      const UserModel = role == "buyer" ? BuyerModel : SellerModel;
+      const UserModel = role == ROLES.BUYER ? BuyerModel : SellerModel;
 
       // Check if user already exists
       const existingUser = await UserModel.findByEmail(email);
@@ -32,7 +37,7 @@ const AuthController = {
 
       //Create new user
       const user =
-        role == "buyer"
+        role == ROLES.BUYER
           ? await BuyerModel.createBuyer(
               first_name,
               last_name,
@@ -48,7 +53,7 @@ const AuthController = {
               store_description
             );
 
-      const userId = role == "buyer" ? user.buyer_id : user.seller_id;
+      const userId = role == ROLES.BUYER ? user.buyer_id : user.seller_id;
       //Generate tokens
       const accessToken = generateJWT(userId, role);
       const refreshToken = generateRefreshToken(userId);
@@ -63,7 +68,7 @@ const AuthController = {
           first_name: user.first_name,
           email: user.email,
           role: role,
-          ...(role === "seller" && {
+          ...(role === ROLES.SELLER && {
             store_name: user.store_name,
             store_description: user.store_description,
           }),
@@ -80,7 +85,7 @@ const AuthController = {
     try {
       const { email, password, role } = req.body;
 
-      const UserModel = role == "buyer" ? BuyerModel : SellerModel;
+      const UserModel = role == ROLES.BUYER ? BuyerModel : SellerModel;
 
       // Check if user exists
       const user = await UserModel.findByEmail(email);
@@ -94,7 +99,7 @@ const AuthController = {
         return res.status(400).json({ message: "Invalid credentials" });
       }
 
-      const userId = role == "buyer" ? user.buyer_id : user.seller_id;
+      const userId = role == ROLES.BUYER ? user.buyer_id : user.seller_id;
 
       // Generate tokens
       const accessToken = generateJWT(userId, role);
@@ -110,7 +115,7 @@ const AuthController = {
           first_name: user.first_name,
           email: user.email,
           role: role,
-          ...(role == "seller" && {
+          ...(role == ROLES.SELLER && {
             store_name: user.store_name,
             store_description: user.store_description,
           }),
@@ -126,7 +131,7 @@ const AuthController = {
   async refreshToken(req, res, next) {
     try {
       const { refreshToken, role } = req.body;
-      const UserModel = role == "buyer" ? BuyerModel : SellerModel;
+      const UserModel = role == ROLES.BUYER ? BuyerModel : SellerModel;
 
       if (!refreshToken) {
         return res.status(400).json({ message: "Refresh token is required" });
@@ -145,13 +150,13 @@ const AuthController = {
       }
 
       // Generate new access token
-      const userId = role == "buyer" ? user.buyer_id : user.seller_id;
+      const userId = role == ROLES.BUYER ? user.buyer_id : user.seller_id;
       const accessToken = generateJWT(userId, role);
 
       res.json({ accessToken });
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        res.status(403).json({ message: "Refresh token expired" });
+        return res.status(403).json({ message: "Refresh token expired" });
       }
       next(error);
     }
@@ -161,7 +166,7 @@ const AuthController = {
     try {
       const { refreshToken, role } = req.body;
 
-      const UserModel = role == "buyer" ? BuyerModel : SellerModel;
+      const UserModel = role == ROLES.BUYER ? BuyerModel : SellerModel;
 
       if (!refreshToken) {
         return res.status(400).json({ message: "Refresh token is required" });
