@@ -41,7 +41,7 @@ const AuthController = {
 
       //Create new user
       const user =
-        role == ROLES.BUYER
+        role === ROLES.BUYER
           ? await BuyerModel.createBuyer(
               first_name,
               last_name,
@@ -57,7 +57,7 @@ const AuthController = {
               store_description
             );
 
-      const userId = role == ROLES.BUYER ? user.buyer_id : user.seller_id;
+      const userId = role === ROLES.BUYER ? user.buyer_id : user.seller_id;
       //Generate tokens
       const accessToken = generateJWT(userId, role);
       const refreshToken = generateRefreshToken(userId);
@@ -103,7 +103,7 @@ const AuthController = {
         return res.status(400).json({ message: "Invalid credentials" });
       }
 
-      const userId = role == ROLES.BUYER ? user.buyer_id : user.seller_id;
+      const userId = role === ROLES.BUYER ? user.buyer_id : user.seller_id;
 
       // Generate tokens
       const accessToken = generateJWT(userId, role);
@@ -119,7 +119,7 @@ const AuthController = {
           first_name: user.first_name,
           email: user.email,
           role: role,
-          ...(role == ROLES.SELLER && {
+          ...(role === ROLES.SELLER && {
             store_name: user.store_name,
             store_description: user.store_description,
           }),
@@ -154,7 +154,7 @@ const AuthController = {
       }
 
       // Generate new access token
-      const userId = role == ROLES.BUYER ? user.buyer_id : user.seller_id;
+      const userId = role === ROLES.BUYER ? user.buyer_id : user.seller_id;
       const accessToken = generateJWT(userId, role);
 
       res.json({ accessToken });
