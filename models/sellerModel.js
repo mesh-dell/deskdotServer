@@ -59,6 +59,14 @@ const SellerModel = {
     const result = await pool.query(query, values);
     return result.rows;
   },
+
+
+  async findById(id) {
+    const query = "SELECT * FROM sellers WHERE seller_id = $1;";
+    const values = [id];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
 };
 
 module.exports = SellerModel;
