@@ -60,10 +60,33 @@ const SellerModel = {
     return result.rows;
   },
 
-
   async findById(id) {
     const query = "SELECT * FROM sellers WHERE seller_id = $1;";
     const values = [id];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
+
+  async updateProfile(
+    first_name,
+    last_name,
+    email,
+    store_name,
+    store_description,
+    seller_id
+  ) {
+    const query = `UPDATE sellers
+    SET first_name = $1, last_name = $2, email = $3, store_name = $4, store_description = $5 WHERE seller_id = $6 
+    RETURNING seller_id, first_name, last_name, email, store_name, store_description`;
+
+    const values = [
+      first_name,
+      last_name,
+      email,
+      store_name,
+      store_description,
+      seller_id,
+    ];
     const result = await pool.query(query, values);
     return result.rows;
   },

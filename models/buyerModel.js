@@ -46,6 +46,16 @@ const BuyerModel = {
     const result = await pool.query(query, values);
     return result.rows;
   },
+
+  async updateProfile(first_name, last_name, email, buyer_id) {
+    const query = `UPDATE buyers
+    SET first_name = $1, last_name = $2, email = $3 WHERE buyer_id = $4 
+    RETURNING buyer_id, first_name, last_name, email`;
+
+    const values = [first_name, last_name, email, buyer_id];
+    const result = await pool.query(query, values);
+    return result.rows;
+  },
 };
 
 module.exports = BuyerModel;
