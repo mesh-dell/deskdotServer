@@ -47,7 +47,7 @@ const BuyerModel = {
     return result.rows;
   },
 
-  async updateProfile(first_name, last_name, email, buyer_id) {
+  async updateProfile(buyer_id, { first_name, last_name, email }) {
     const query = `UPDATE buyers
     SET first_name = $1, last_name = $2, email = $3 WHERE buyer_id = $4 
     RETURNING buyer_id, first_name, last_name, email`;

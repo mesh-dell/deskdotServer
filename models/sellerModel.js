@@ -68,12 +68,8 @@ const SellerModel = {
   },
 
   async updateProfile(
-    first_name,
-    last_name,
-    email,
-    store_name,
-    store_description,
-    seller_id
+    seller_id,
+    { first_name, last_name, email, store_name, store_description }
   ) {
     const query = `UPDATE sellers
     SET first_name = $1, last_name = $2, email = $3, store_name = $4, store_description = $5 WHERE seller_id = $6 
