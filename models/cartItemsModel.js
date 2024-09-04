@@ -33,6 +33,13 @@ const CartItemsModel = {
     const result = await pool.query(query, values);
     return result.rows;
   },
+
+  async getCartItem(cart_item_id) {
+    const query = "SELECT * FROM cart_items WHERE cart_item_id = $1";
+    const values = [cart_item_id];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  },
 };
 
 module.exports = CartItemsModel;
