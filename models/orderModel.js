@@ -10,6 +10,13 @@ const OrderModel = {
     return result.rows[0];
   },
 
+  async findByOrderId(order_id) {
+    const query = "SELECT * FROM orders WHERE order_id = $1";
+    const values = [order_id];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  },
+  
   async findByBuyerId(buyer_id) {
     const query = "SELECT * FROM orders WHERE buyer_id = $1";
     const values = [buyer_id];
