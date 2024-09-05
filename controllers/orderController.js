@@ -43,16 +43,27 @@ const OrderController = {
   async getUserOrders(req, res, next) {
     try {
       const { id } = req.user;
-      const order = await OrderModel.findByBuyerId(id);
+      const orders = await OrderModel.findByBuyerId(id);
 
-      if (!order) {
+      if (!orders.length) {
         return res.status(404).json({ message: "Order not found" });
       }
 
       // Get items
-      const orderItems = await OrderItemModel.findByOrderId(order.order_id);
+      const ordersWithItems = await Promise.all(
+        orders.map(async (order) => {
+          const orderItems = await OrderItemModel.findByOrderId(order.order_id);
+          return {
+            ...order,
+            items: orderItems,
+          };
+        })
+      );
 
-      res.json(orderItems);
+      res.json({
+        message: "Orders fetched successfully.",
+        orders: ordersWithItems,
+      });
     } catch (error) {
       next(error);
     }
