@@ -14,7 +14,7 @@ const BuyerModel = {
     const query = "SELECT * FROM buyers WHERE email = $1;";
     const values = [email];
     const result = await pool.query(query, values);
-    return result.rows;
+    return result.rows[0];
   },
 
   async saveRefreshToken(buyer_id, refresh_token) {
