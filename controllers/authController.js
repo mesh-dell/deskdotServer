@@ -30,8 +30,8 @@ const AuthController = {
 
       // Check if user already exists
       const existingUser = await UserModel.findByEmail(email);
-
-      if (existingUser) {
+      
+      if (existingUser.length) {
         return res.status(400).json({ message: "User already exists" });
       }
 
