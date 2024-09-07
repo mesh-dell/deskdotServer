@@ -1,6 +1,6 @@
-const { refreshToken } = require("../controllers/authController");
-const app = require("../server");
+const app = require("../app");
 const request = require("supertest");
+const pool = require("../config/db");
 
 describe("Auth routes", () => {
   it("should register new buyer", async () => {
@@ -45,5 +45,9 @@ describe("Auth routes", () => {
       });
     expect(res.statusCode).toEqual(200);
     expect(res.body.message).toEqual("Logged out successfully");
+  });
+
+  afterAll(() => {
+    pool.end();
   });
 });

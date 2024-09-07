@@ -1,5 +1,6 @@
-const app = require("../server");
+const app = require("../app");
 const request = require("supertest");
+const pool = require("../config/db");
 
 describe("user routes", () => {
   let token;
@@ -31,5 +32,9 @@ describe("user routes", () => {
       });
     expect(res.statusCode).toEqual(200);
     expect(res.body.message).toEqual("Profile updated succesfully");
+  });
+
+  afterAll(() => {
+    pool.end();
   });
 });
