@@ -13,16 +13,16 @@ const getUserModel = (role) => {
 const userController = {
   async getProfile(req, res, next) {
     try {
-      const { role, userId } = req.user;
+      const { role, id } = req.user;
       const UserModel = getUserModel(role);
-      const user = await UserModel.findById(userId);
+      const user = await UserModel.findById(id);
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-
+            
       res.json({
-        id: userId,
+        id: id,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
@@ -39,14 +39,14 @@ const userController = {
 
   async updateProfile(req, res, next) {
     try {
-      const { role, userId } = req.user;
+      const { role, id } = req.user;
 
       const { first_name, last_name, email, store_name, store_description } =
         req.body;
 
       const UserModel = getUserModel(role);
 
-      const user = await UserModel.updateProfile(userId, {
+      const user = await UserModel.updateProfile(id, {
         first_name,
         last_name,
         email,
@@ -60,7 +60,7 @@ const userController = {
       res.json({
         message: "Profile updated succesfully",
         user: {
-          id: userId,
+          id: id,
           first_name: user.first_name,
           last_name: user.last_name,
           email: user.email,
