@@ -34,7 +34,7 @@ const SellerModel = {
     const query = "SELECT * FROM sellers WHERE email = $1;";
     const values = [email];
     const result = await pool.query(query, values);
-    return result.rows;
+    return result.rows[0];
   },
 
   async saveRefreshToken(seller_id, refresh_token) {
