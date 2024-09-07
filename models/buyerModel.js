@@ -44,7 +44,7 @@ const BuyerModel = {
     const query = "SELECT * FROM buyers WHERE buyer_id = $1;";
     const values = [id];
     const result = await pool.query(query, values);
-    return result.rows;
+    return result.rows[0];
   },
 
   async updateProfile(buyer_id, { first_name, last_name, email }) {
