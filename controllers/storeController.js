@@ -6,13 +6,13 @@ const StoreController = {
     try {
       const stores = await SellerModel.getAllStores();
 
-      res.json(
-        stores.map((store) => ({
+      res.json({
+        stores: stores.map((store) => ({
           store_name: store.store_name,
           store_description: store.store_description,
           seller_id: store.seller_id,
-        }))
-      );
+        })),
+      });
     } catch (error) {
       next(error);
     }
@@ -20,8 +20,10 @@ const StoreController = {
 
   async getStore(req, res, next) {
     try {
-      const { seller_id } = req.params;
-      const store = await SellerModel.findById(seller_id);
+      const { id } = req.params;
+      
+      const store = await SellerModel.findById(id);
+
       if (!store) {
         return res.status(404).json({ message: "Store not found" });
       }
@@ -38,12 +40,12 @@ const StoreController = {
 
   async getStoreProducts(req, res, next) {
     try {
-      const { seller_id } = req.params;
-      const store = SellerModel.findById(seller_id);
+      const { id } = req.params;
+      const store = await SellerModel.findById(id);
       if (!store) {
         return res.status(404).json({ message: "Store not found" });
       }
-      const products = await ProductModel.findBySellerId(seller_id);
+      const products = await ProductModel.findBySellerId(id);
 
       res.json({
         store_name: store.store_name,
