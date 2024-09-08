@@ -27,6 +27,7 @@ describe("Store routes", () => {
     const res = await request(app).post("/api/auth/login").send({
       email: "jane@example.com",
       password: "password123",
+      role: "seller"
     });
     expect(res.statusCode).toEqual(200);
     expect(res.body.user).toHaveProperty("email", "jane@example.com");
