@@ -3,6 +3,7 @@ const OrderItemModel = require("../models/orderItemModel");
 const CartModel = require("../models/cartModel");
 const CartItemsModel = require("../models/cartItemsModel");
 const ProductModel = require("../models/productModel");
+const SellerModel = require("../models/sellerModel")
 
 const OrderController = {
   async createOrder(req, res, next) {
@@ -127,6 +128,18 @@ const OrderController = {
 
   async getSellerOrders(req, res, next) {
     try {
+      if (req.user.role != "seller") {
+        return res.status(403).json({
+          message:
+            "Access denied. Only sellers are allowed to perform this action.",
+        });
+      }
+
+      const seller = await SellerModel.findById(req.user.id);
+
+      if (!seller) {
+        return res.status(404).json({ message: "Seller not found." });
+      }
       const { id } = req.user;
       const items = await OrderItemModel.findBySellerId(id);
       res.json(items);
