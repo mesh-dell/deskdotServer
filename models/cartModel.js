@@ -14,7 +14,7 @@ const CartModel = {
     const query = "SELECT * FROM carts WHERE buyer_id = $1";
     const values = [buyer_id];
     const result = await pool.query(query, values);
-    return result.rows;
+    return result.rows[0];
   },
 };
 
