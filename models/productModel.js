@@ -26,7 +26,7 @@ const ProductModel = {
     const query = "SELECT * FROM products WHERE product_id = $1";
     const values = [product_id];
     const result = await pool.query(query, values);
-    return result.rows;
+    return result.rows[0];
   },
 
   async getAllProducts() {
@@ -50,7 +50,7 @@ const ProductModel = {
     quantity
   ) {
     const query = `UPDATE products
-    SET updated_at = CURRENT_TIMESTAMP product_name = $1, product_description = $2, price = $3, quantity = $4 WHERE product_id = $5;`;
+    SET updated_at = CURRENT_TIMESTAMP, product_name = $1, product_description = $2, price = $3, quantity = $4 WHERE product_id = $5 RETURNING *;`;
 
     const values = [
       product_name,
@@ -60,7 +60,7 @@ const ProductModel = {
       product_id,
     ];
     const result = await pool.query(query, values);
-    return result.rows;
+    return result.rows[0];
   },
 
   async deleteProduct(product_id) {
