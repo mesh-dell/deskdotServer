@@ -1,18 +1,30 @@
 const ProductModel = require("../models/productModel");
+const SellerModel = require("../models/sellerModel");
 
 const ProductController = {
   async createProduct(req, res) {
     try {
-      const { seller_id, product_name, product_description, price, quantity } =
-        req.body;
+      if (req.user.role != "seller") {
+        return res.status(403).json({
+          message:
+            "Access denied. Only sellers are allowed to perform this action.",
+        });
+      }
+
+      const seller = await SellerModel.findById(req.user.id);
+
+      if (!seller) {
+        return res.status(404).json({ message: "Seller not found." });
+      }
+      const { product_name, product_description, price, quantity } = req.body;
       const product = await ProductModel.createProduct(
-        seller_id,
+        seller.seller_id,
         product_name,
         product_description,
         price,
         quantity
       );
-      res.status(201).json(product);
+      res.status(201).json({ product: product });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
@@ -20,7 +32,7 @@ const ProductController = {
 
   async findById(req, res) {
     try {
-      const product_id = req.params.product_id;
+      const product_id = req.params.id;
       const product = await ProductModel.findById(product_id);
 
       if (product) {
@@ -36,7 +48,7 @@ const ProductController = {
   async findAll(req, res) {
     try {
       const products = await ProductModel.getAllProducts();
-      res.status(200).json(products);
+      res.status(200).json({ products: products });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -52,12 +64,25 @@ const ProductController = {
     }
   },
 
-  async updateProduct(req, res) {
+  async updateProduct(req, res, next) {
     try {
+      if (req.user.role != "seller") {
+        return res.status(403).json({
+          message:
+            "Access denied. Only sellers are allowed to perform this action.",
+        });
+      }
+
+      const seller = await SellerModel.findById(req.user.id);
+
+      if (!seller) {
+        return res.status(404).json({ message: "Seller not found." });
+      }
+
       const { product_name, product_description, price, quantity } = req.body;
 
       const product = await ProductModel.updateProduct(
-        req.params.product_id,
+        req.params.id,
         product_name,
         product_description,
         price,
@@ -70,13 +95,25 @@ const ProductController = {
         res.status(404).json({ message: "Product not found" });
       }
     } catch (err) {
-      res.status(400).json({ message: err.message });
+      next(err);
     }
   },
 
-  async deleteProduct(req, res) {
+  async deleteProduct(req, res, next) {
     try {
-      const product = await ProductModel.deleteProduct(req.params.product_id);
+      if (req.user.role != "seller") {
+        return res.status(403).json({
+          message:
+            "Access denied. Only sellers are allowed to perform this action.",
+        });
+      }
+
+      const seller = await SellerModel.findById(req.user.id);
+
+      if (!seller) {
+        return res.status(404).json({ message: "Seller not found." });
+      }
+      const product = await ProductModel.deleteProduct(req.params.id);
 
       if (product) {
         res.json(product);
@@ -84,7 +121,7 @@ const ProductController = {
         res.status(404).json({ message: "Product not found" });
       }
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      next(err)
     }
   },
 };
