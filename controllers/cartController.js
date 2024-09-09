@@ -23,7 +23,7 @@ const CartController = {
   async addToCart(req, res, next) {
     try {
       const { id } = req.user;
-      const cart = await CartModel.findByBuyerId(id);
+      let cart = await CartModel.findByBuyerId(id);
 
       if (!cart) {
         cart = await CartModel.createCart(id);
