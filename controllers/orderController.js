@@ -3,13 +3,12 @@ const OrderItemModel = require("../models/orderItemModel");
 const CartModel = require("../models/cartModel");
 const CartItemsModel = require("../models/cartItemsModel");
 const ProductModel = require("../models/productModel");
-const SellerModel = require("../models/sellerModel")
+const SellerModel = require("../models/sellerModel");
 
 const OrderController = {
   async createOrder(req, res, next) {
     try {
       const { id } = req.user;
-      const order = await OrderModel.createOrder(id);
       const cart = await CartModel.findByBuyerId(id);
 
       if (!cart) {
@@ -21,6 +20,8 @@ const OrderController = {
       if (!cartItems.length) {
         return res.status(400).json({ message: "Cart is empty" });
       }
+
+      const order = await OrderModel.createOrder(id);
 
       const items = await Promise.all(
         cartItems.map(async (item) => {
