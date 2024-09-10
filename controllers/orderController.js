@@ -89,6 +89,18 @@ const OrderController = {
   // Seller
   async updateStatus(req, res, next) {
     try {
+      if (req.user.role != "seller") {
+        return res.status(403).json({
+          message:
+            "Access denied. Only sellers are allowed to perform this action.",
+        });
+      }
+
+      const seller = await SellerModel.findById(req.user.id);
+
+      if (!seller) {
+        return res.status(404).json({ message: "Seller not found." });
+      }
       const { order_item_id } = req.params;
       const { status } = req.body;
 
