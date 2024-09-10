@@ -109,6 +109,10 @@ const OrderController = {
         status
       );
 
+      if (!updatedItem) {
+        return res.status(404).json({ message: "Order item not found" });
+      }
+      
       res.json({ message: "Order status updated", updatedItem });
     } catch (error) {
       next(error);
