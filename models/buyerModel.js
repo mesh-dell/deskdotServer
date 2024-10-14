@@ -29,7 +29,7 @@ const BuyerModel = {
     const query = "SELECT * FROM buyers WHERE refresh_token = $1;";
     const values = [refresh_token];
     const result = await pool.query(query, values);
-    return result.rows;
+    return result.rows[0];
   },
 
   async removeRefreshToken(refresh_token) {
