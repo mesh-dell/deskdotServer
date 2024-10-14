@@ -2,7 +2,11 @@ const errorMiddleware = (err, req, res, next) => {
   console.error(err.stack);
 
   // Determining status code
-  const statusCode = err.statusCode === 200 ? 500 : res.statusCode;
+  let statusCode = err.statusCode === 200 ? 500 : res.statusCode;
+
+  if (err.code === "23505") {
+    statusCode = 400;
+  }
   res.status(statusCode);
 
   // Sending error response
