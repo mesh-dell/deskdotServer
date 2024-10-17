@@ -40,6 +40,13 @@ const CartItemsModel = {
     const result = await pool.query(query, values);
     return result.rows[0];
   },
+
+  async clearCart(cart_id) {
+    const query = "DELETE from cart_items WHERE cart_id = $1 RETURNING *";
+    const values = [cart_id];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  },
 };
 
 module.exports = CartItemsModel;
