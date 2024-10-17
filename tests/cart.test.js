@@ -35,6 +35,15 @@ describe("Cart routes", () => {
     expect(res.body).toBeInstanceOf(Array);
   });
 
+  it("should clear cart", async () => {
+    const res = await request(app)
+      .delete("/api/cart")
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.statusCode).toEqual(200);
+    console.log(res.body);
+    
+  });
+
   // it("should update item quantity", async () => {
   //   const res = await request(app)
   //     .put("/api/cart/items/3")
