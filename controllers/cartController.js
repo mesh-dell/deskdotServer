@@ -93,6 +93,23 @@ const CartController = {
       next(error);
     }
   },
+
+  async clear(req, res, next) {
+    try {
+      const id = req.user.id;
+      const cart = await CartModel.findByBuyerId(id);
+
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
+      }
+
+      const { cart_id } = cart;
+      const cartItems = await CartItemsModel.clearCart(cart_id);
+      res.json({ message: "Cart cleared", cartItems });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = CartController;
