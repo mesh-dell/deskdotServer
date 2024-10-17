@@ -47,10 +47,6 @@ const OrderController = {
       const { id } = req.user;
       const orders = await OrderModel.findByBuyerId(id);
 
-      if (!orders.length) {
-        return res.status(404).json({ message: "Order not found" });
-      }
-
       // Get items
       const ordersWithItems = await Promise.all(
         orders.map(async (order) => {
@@ -112,7 +108,7 @@ const OrderController = {
       if (!updatedItem) {
         return res.status(404).json({ message: "Order item not found" });
       }
-      
+
       res.json({ message: "Order status updated", updatedItem });
     } catch (error) {
       next(error);
