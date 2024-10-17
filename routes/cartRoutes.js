@@ -11,6 +11,7 @@ router.put(
   authMiddleware,
   CartController.updateQuantity
 );
+router.delete("/", authMiddleware, CartController.clear);
 router.delete("/items/:cart_item_id", authMiddleware, CartController.remove);
 
 module.exports = router;
