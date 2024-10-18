@@ -3,7 +3,7 @@ const SellerModel = require("../models/sellerModel");
 
 const ROLES = {
   BUYER: "buyer",
-  SELLER: "seler",
+  SELLER: "seller",
 };
 
 const getUserModel = (role) => {
@@ -20,7 +20,7 @@ const userController = {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-            
+      
       res.json({
         id: id,
         first_name: user.first_name,
