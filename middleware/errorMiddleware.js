@@ -7,6 +7,11 @@ const errorMiddleware = (err, req, res, next) => {
   if (err.code === "23505") {
     statusCode = 400;
   }
+
+  if (err.code === "23503") {
+    statusCode = 403;
+  }
+
   res.status(statusCode);
 
   // Sending error response
