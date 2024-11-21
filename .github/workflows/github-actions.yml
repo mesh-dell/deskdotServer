@@ -1,0 +1,54 @@
+name: CI/CD Pipeline for AWS Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 18
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # Step 4: Run tests with Jest
+      - name: Run Jest tests
+        run: |
+          npm test
+
+      # Step 5: Build the application
+      - name: Generate build
+        run: |
+          npm run build
+
+      # Step 6: Deploy to AWS EC2 using rsync
+      - name: Set up SSH Agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_PRIVATE_KEY }}
+
+      - name: Deploy app to EC2
+        run: |
+          rsync -avz --exclude "node_modules" --exclude ".git" --exclude "configuration" -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/deskdotServer
+
+      # Step 7: Restart the app using systemd
+      - name: Restart systemd service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            sudo systemctl restart deskdot.service
