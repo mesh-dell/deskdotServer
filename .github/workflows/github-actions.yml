@@ -65,12 +65,7 @@ jobs:
         run: |
           npm test
 
-      # Step 7: Build the application
-      - name: Generate build
-        run: |
-          npm run build
-
-      # Step 8: Deploy to AWS EC2 using rsync
+      # Step 7: Deploy to AWS EC2 using rsync
       - name: Set up SSH Agent
         uses: webfactory/ssh-agent@v0.7.0
         with:
@@ -80,7 +75,7 @@ jobs:
         run: |
           rsync -avz --exclude "node_modules" --exclude ".git" --exclude "configuration" -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/deskdotServer
 
-      # Step 9: Restart the app using systemd
+      # Step 8: Restart the app using systemd
       - name: Restart systemd service
         uses: appleboy/ssh-action@master
         with:
